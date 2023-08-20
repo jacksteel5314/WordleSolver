@@ -36,6 +36,8 @@ def _remove(colors, letters):
             for word in word_bank:
                 if letters[i] not in word:
                     word_bank.remove(word)
+                if letters[i] == word[i]:
+                    word_bank.remove(word)
         elif colors[i] == 'g':
             for word in word_bank:
                 if word[i] != letters[i]:
