@@ -4,29 +4,38 @@ import numpy as np
 import random 
 
 word_bank = []
-
-def first_guess():
-    with open('wordle-La.txt') as f:
+with open('wordle-La.txt') as f:
         word_bank = f.readlines()
         i = 0
         while i < len(word_bank):
             word_bank[i] = word_bank[i].replace("\n", "")
             i+=1
-    word_bank = np.array(word_bank)
-    return _best_guess(word_bank)
+word_bank = np.array(word_bank)
 
 
 def suggestions(colors, letters):
     clean_colors = colors.lower().strip(" ")
     clean_letters = letters.lower().strip(" ")
-    _valid_input(clean_colors, clean_letters)
-    new_word_bank = _remove(clean_colors, clean_letters)
-    return _best_guess(new_word_bank)
+    new_word_bank = remove(clean_colors, clean_letters)
+    return best_guess(new_word_bank)
 
-def _valid_input(colors, letters):
-    return True
 
-def _remove(colors, letters):
+def valid_input(colors, letters):
+    if (len(colors) != 5) & (len(letters) != 5):
+        raise ValueError(f"Colors input and letters input must be five characters in length.")
+    elif len(colors) != 5:
+        raise ValueError(f"Colors input must be five characters in length.")
+    elif len(letters) != 5:
+        raise ValueError(f"Letters input must be five characters in length.")
+    for i in range(len(colors)):
+        if (colors[i] != 'b') & (colors[i] != 'g') & (colors[i] == 'y'):
+            raise ValueError(f"Colors can only be 'b', for black, 'y', for yellow, or 'g', for green.")
+    if letters not in word_bank: 
+        raise ValueError(f"The inputted word is not in the word bank. Try a suggested word.")
+    return
+    
+
+def remove(colors, letters):
     for i in range(5):
         if colors[i] == 'b':
             for word in word_bank:
@@ -42,9 +51,9 @@ def _remove(colors, letters):
             for word in word_bank:
                 if word[i] != letters[i]:
                     word_bank.remove(word)
-        return word_bank 
 
-def _best_guess(new_word_bank):
+
+def best_guess():
     ideal_word = ""
     letter_counts = {}
     # Iterate through each letter
@@ -52,7 +61,7 @@ def _best_guess(new_word_bank):
         indiv_letter_counts = {}
         
         # Iterate through each word and add to total letter counts and positional letter counts 
-        for input in new_word_bank: 
+        for input in word_bank: 
             letter = input[i]
             letter_counts[letter] = letter_counts.get(letter, 0) + 1
             indiv_letter_counts[letter] = indiv_letter_counts.get(letter, 0) + 1
@@ -67,7 +76,7 @@ def _best_guess(new_word_bank):
     # Iterate through each word
     list = {}
     value = 0
-    for word in new_word_bank:
+    for word in word_bank:
 
         # Check if the top ten ranking letters are in the word, and add values descending by 10 from 100 to value
         if sorted_letters[0] in word:
