@@ -14,10 +14,11 @@ word_bank = np.array(word_bank)
 
 
 def suggestions(colors, letters):
+    global word_bank
     clean_colors = colors.lower().strip(" ")
     clean_letters = letters.lower().strip(" ")
-    new_word_bank = remove(clean_colors, clean_letters)
-    return best_guess(new_word_bank)
+    remove(clean_colors, clean_letters)
+    return best_guess()
 
 
 def valid_input(colors, letters):
@@ -36,21 +37,26 @@ def valid_input(colors, letters):
     
 
 def remove(colors, letters):
+    global word_bank
     for i in range(5):
         if colors[i] == 'b':
             for word in word_bank:
                 if letters[i] in word:
-                    word_bank.remove(word)
+                    new_bank = np.delete(word_bank, np.where(word_bank == word))
+                    word_bank = new_bank
         elif colors[i] == 'y':
             for word in word_bank:
                 if letters[i] not in word:
-                    word_bank.remove(word)
+                    new_bank = np.delete(word_bank, np.where(word_bank == word))
+                    word_bank = new_bank
                 if letters[i] == word[i]:
-                    word_bank.remove(word)
+                    new_bank = np.delete(word_bank, np.where(word_bank == word))
+                    word_bank = new_bank
         elif colors[i] == 'g':
             for word in word_bank:
                 if word[i] != letters[i]:
-                    word_bank.remove(word)
+                    new_bank = np.delete(word_bank, np.where(word_bank == word))
+                    word_bank = new_bank
 
 
 def best_guess():
