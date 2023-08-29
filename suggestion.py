@@ -3,15 +3,24 @@ import string
 import numpy as np
 import random 
 
+word_bank = []
+with open('wordle-La.txt') as f:
+        word_bank = f.readlines()
+        i = 0
+        while i < len(word_bank):
+            word_bank[i] = word_bank[i].replace("\n", "")
+            i+=1
+word_bank = np.array(word_bank)
 
-def suggestions(word_bank, colors, letters):
+
+def suggestions(colors, letters):
     clean_colors = colors.lower().strip(" ")
     clean_letters = letters.lower().strip(" ")
-    new_word_bank = remove(word_bank, clean_colors, clean_letters)
+    new_word_bank = remove(clean_colors, clean_letters)
     return best_guess(new_word_bank)
 
 
-def valid_input(word_bank, colors, letters):
+def valid_input(colors, letters):
     if (len(colors) != 5) & (len(letters) != 5):
         raise ValueError(f"Colors input and letters input must be five characters in length.")
     elif len(colors) != 5:
@@ -26,7 +35,7 @@ def valid_input(word_bank, colors, letters):
     return
     
 
-def remove(word_bank, colors, letters):
+def remove(colors, letters):
     for i in range(5):
         if colors[i] == 'b':
             for word in word_bank:
@@ -42,10 +51,9 @@ def remove(word_bank, colors, letters):
             for word in word_bank:
                 if word[i] != letters[i]:
                     word_bank.remove(word)
-    return word_bank
 
 
-def best_guess(word_bank):
+def best_guess():
     ideal_word = ""
     letter_counts = {}
     # Iterate through each letter
@@ -111,9 +119,6 @@ def best_guess(word_bank):
     letter_counts.clear()
     sorted_letters.clear()
     list.clear()
-    new_counts.clear()
-    indiv_letter_counts.clear()
-    ideal_word = ""
     return sorted_words[:10]
 
 
