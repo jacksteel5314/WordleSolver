@@ -20,7 +20,11 @@ def main():
                 print(err)
                 continue
             break
-        suggestion.suggestions(colors, word)
+        try:
+            suggestion.suggestions(colors, word)
+        except ValueError as err:
+            print(err)
+            break
         list = suggestion.best_guess()
         print(f"The best possible choice for word #{i+1} is: " + list[0])
         print("Other possible options in descending order are: ", list[1:10])

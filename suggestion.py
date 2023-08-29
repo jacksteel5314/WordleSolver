@@ -18,6 +18,8 @@ def suggestions(colors, letters):
     clean_colors = colors.lower().strip(" ")
     clean_letters = letters.lower().strip(" ")
     remove(clean_colors, clean_letters)
+    if len(word_bank) == 0:
+        raise ValueError(f"At one point, you inputted incorrect coloring. Please start again.")
     return best_guess()
 
 
@@ -74,6 +76,8 @@ def best_guess():
 
         # Sort the positional letter counts and add the first ranking count to ideal word
         new_counts = sorted(indiv_letter_counts, key=lambda x: indiv_letter_counts[x], reverse=True)
+        if len(new_counts) == 0:
+            break
         ideal_word += new_counts[0]
 
     # Sort the total letter count
@@ -85,38 +89,19 @@ def best_guess():
     for word in word_bank:
 
         # Check if the top ten ranking letters are in the word, and add values descending by 10 from 100 to value
-        if sorted_letters[0] in word:
-            value += 100
-        if sorted_letters[1] in word:
-            value += 90
-        if sorted_letters[2] in word:
-            value += 80
-        if sorted_letters[3] in word:
-            value += 70
-        if sorted_letters[4] in word:
-            value += 60
-        if sorted_letters[5] in word:
-            value += 50
-        if sorted_letters[6] in word:
-            value += 40
-        if sorted_letters[7] in word:
-            value += 30
-        if sorted_letters[8] in word:
-            value += 20
-        if sorted_letters[9] in word:
-            value += 10
+        val = 100
+        if len(sorted_letters) > 10:
+            sorted_letters = sorted_letters[:10]
+        for i in range(len(sorted_letters)):
+            if sorted_letters[i] in word:
+                value += val
+            i+=1
+            val-=10
 
-        # If the letters of the word match the top positional letters, then add 50 
-        if ideal_word[0] == word[0]:
-            value += 50
-        if ideal_word[1] == word[1]:
-            value += 50
-        if ideal_word[2] == word[2]:
-            value += 50
-        if ideal_word[3] == word[3]:
-            value += 50
-        if ideal_word[4] == word[4]:
-            value += 50
+        # If the letters of the word match the top positional letters, then add 50
+        for i in range(5): 
+            if ideal_word[i] == word[i]:
+                value += 50
         list[word] = value
         value=0
 
