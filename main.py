@@ -26,6 +26,8 @@ def main():
             print(err)
             break
         list = suggestion.best_guess()
+        if len(list) == 1:
+            continue
         print(f"The best possible choice for word #{i+1} is: " + list[0])
         print("Other possible options in descending order are: ", list[1:10])
 
