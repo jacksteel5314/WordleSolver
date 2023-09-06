@@ -31,12 +31,6 @@ def main():
         print(f"The best possible choice for word #{i+1} is: " + list[0])
         print("Other possible options in descending order are: ", list[1:10])
 
-        
-
-    
-
-
-    # Fix this loop of inputs. Make sure to add an incorrect input if the combo is impossible!
 
 if __name__ == '__main__':
     main()
