@@ -8,7 +8,7 @@ def main():
     print("Other possible options in descending order are: " + list[1] + ", " + list[2] + ", " + list[3] + ", " + list[4] + ", " + list[5] + ", " + list[6] + ", " + list[7] + ", " + list[8] + ", and " + list[9])
     for i in range(1, 6):
         if len(suggestion.word_bank) == 1:
-            print(f"Congratulations, you found your word: {suggestion.word_bank}")
+            print(f"Congratulations, you found your word: {suggestion.word_bank[0]}")
             break
         while True:
             word = input(f"Input guess #{i}: ")
