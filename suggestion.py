@@ -11,6 +11,7 @@ with open('wordle-La.txt') as f:
             word_bank[i] = word_bank[i].replace("\n", "")
             i+=1
 word_bank = np.array(word_bank)
+plausible_colors = ['b', 'y', 'g']
 
 
 def suggestions(colors, letters):
@@ -24,6 +25,8 @@ def suggestions(colors, letters):
 
 
 def valid_input(colors, letters):
+    colors = colors.lower().strip(" ")
+    letters = letters.lower().strip(" ")
     if (len(colors) != 5) & (len(letters) != 5):
         raise ValueError(f"Colors input and letters input must be five characters in length.")
     elif len(colors) != 5:
@@ -31,8 +34,10 @@ def valid_input(colors, letters):
     elif len(letters) != 5:
         raise ValueError(f"Letters input must be five characters in length.")
     for i in range(len(colors)):
-        if (colors[i] != 'b') & (colors[i] != 'g') & (colors[i] == 'y'):
+        if colors[i] not in plausible_colors:
             raise ValueError(f"Colors can only be 'b', for black, 'y', for yellow, or 'g', for green.")
+        if not letters[i].isalpha():
+            raise ValueError(f"Words must only contain alpha values.")
     if letters not in word_bank: 
         raise ValueError(f"The inputted word is not in the word bank. Try a suggested word.")
     return
